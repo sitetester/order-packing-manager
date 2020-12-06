@@ -27,7 +27,7 @@ export class OrderHandler {
         };
     }
 
-    getTotalVolume(containers: Containers[]) {
+    private getTotalVolume(containers: Containers[]) {
 
         let totalVolume = 0
         containers.map(container => container.containerType).forEach(containerType => {
