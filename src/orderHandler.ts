@@ -1,6 +1,6 @@
 import {ContainerSpec, OrderRequest, ShipmentRecord} from "./interfaces";
-import {ContainersHandler} from "./ContainersHandler";
-import {Product, ProductsHandler} from "./ProductsHandler";
+import {ContainersHandler} from "./containersHandler";
+import {Product, ProductsHandler} from "./productsHandler";
 
 export class OrderHandler {
 

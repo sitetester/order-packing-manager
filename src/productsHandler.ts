@@ -1,5 +1,5 @@
 import {Dimensions} from "./interfaces";
-import {DimensionsHelper} from "./DimensionsHelper";
+import {DimensionsHelper} from "./dimensionsHelper";
 
 export class ProductsHandler {
 
