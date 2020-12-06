@@ -11,15 +11,18 @@ export class ContainersHandler {
     }
 
     getContainerTypeVolume(containerType: string): number {
+
         const containerSpec = this.getContainers().filter(containerSpec => containerSpec.containerType === containerType)[0]
         return this.getContainerVolume(containerSpec)
     }
 
     getContainerVolume(containerSpecs: ContainerSpec): number {
+
         return new DimensionsHelper().getDimensionsVolume(containerSpecs.dimensions)
     }
 
     getContainerTypesVolume(): ContainerTypeVolume[] {
+
         return this.parameters.containerSpecs.map(containerSpecs => {
                 return {
                     containerType: containerSpecs.containerType,

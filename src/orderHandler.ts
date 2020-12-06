@@ -34,6 +34,7 @@ export class OrderHandler {
         containers.map(container => container.containerType).forEach(containerType => {
             totalVolume += this.containersHandler.getContainerTypeVolume(containerType)
         })
+
         return totalVolume
     }
 
@@ -70,6 +71,7 @@ export class OrderHandler {
                 let containingProducts: ContainingProduct[] = []
 
                 if (this.canStoreProduct(containerSpec, product)) {
+
                     if (this.canStoreProductPerOrderedQuantity(containerSpec, product)) {
                         containers.push({
                             containerType: containerSpec.containerType,
@@ -77,6 +79,7 @@ export class OrderHandler {
                         })
                         quantityAdded += product.orderedQuantity
                         break // no need to check in next container
+
                     } else {
                         const howManyCanBeStored = this.howManyCanBeStored(containerSpec, product)
                         containers.push({
@@ -103,6 +106,7 @@ export class OrderHandler {
         for (let i = 0; i < howManyTimes; i++) {
             containers.push(container)
         }
+
         return containers
     }
 
