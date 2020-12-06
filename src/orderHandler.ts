@@ -56,7 +56,7 @@ export class OrderHandler {
             })
         })
 
-        if (exceedingSizeProducts.length > 0) {
+        if (exceedingSizeProducts.length === containerTypesVolume.length) {
             let error = `Order can't be executed, since one of it's product(s) (${JSON.stringify(exceedingSizeProducts)}`
             error += ` exceeds available containers volume.`
 
