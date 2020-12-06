@@ -1,7 +1,6 @@
 import {ContainerSpec, OrderRequest, ShipmentRecord} from "./interfaces";
 import {ContainersHandler} from "./ContainersHandler";
 import {Product, ProductsHandler} from "./ProductsHandler";
-import * as util from "util";
 
 export class OrderHandler {
 
@@ -26,10 +25,6 @@ export class OrderHandler {
             },
             containers: containers
         };
-    }
-
-    debug(obj: Object) {
-        console.log(util.inspect(obj, {showHidden: false, depth: null}))
     }
 
     getTotalVolume(containers: Containers[]) {
