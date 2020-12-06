@@ -28,6 +28,7 @@ export class OrderHandler {
     }
 
     getTotalVolume(containers: Containers[]) {
+
         let totalVolume = 0
         containers.map(container => container.containerType).forEach(containerType => {
             totalVolume += this.containersHandler.getContainerTypeVolume(containerType)
@@ -36,6 +37,7 @@ export class OrderHandler {
     }
 
     private checkOrderExecutable(orderRequest: OrderRequest) {
+
         const containerTypesVolume = this.containersHandler.getContainerTypesVolume()
         orderRequest.products.forEach(product => {
             const productVolume = this.productsHandler.getProductVolume(product)
@@ -95,6 +97,7 @@ export class OrderHandler {
     }
 
     private reuseSameContainer(howManyTimes: number, containers: Containers[]): Containers[] {
+
         const container = containers[0]
         for (let i = 0; i < howManyTimes; i++) {
             containers.push(container)
@@ -103,14 +106,17 @@ export class OrderHandler {
     }
 
     private canStoreProductPerOrderedQuantity(containerSpec: ContainerSpec, product: Product): boolean {
+
         return this.containersHandler.getContainerVolume(containerSpec) >= this.productsHandler.getProductVolumePerOrderedQuantity(product)
     }
 
     private canStoreProduct(containerSpec: ContainerSpec, product: Product): boolean {
+
         return this.containersHandler.getContainerVolume(containerSpec) >= this.productsHandler.getProductVolume(product)
     }
 
     private howManyCanBeStored(containerSpec: ContainerSpec, product: Product): number {
+
         const containerVolume = this.containersHandler.getContainerVolume(containerSpec)
         const productVolume = this.productsHandler.getProductVolume(product)
         let adjustableVolume = productVolume
@@ -125,6 +131,7 @@ export class OrderHandler {
     }
 
     private addToContainingProducts(containingProducts: ContainingProduct[], id: string, quantity: number): ContainingProduct[] {
+
         containingProducts.push({
             id: id,
             quantity: quantity
