@@ -41,7 +41,6 @@ export class OrderHandler {
         return totalVolume
     }
 
-    // ignore that container whose total volume is less than required ProductVolumePerOrderedQuantity
     private checkOrderExecutable(orderRequest: OrderRequest) {
         const containerTypesVolume = this.containersHandler.getContainerTypesVolume()
         orderRequest.products.forEach(product => {
@@ -98,7 +97,7 @@ export class OrderHandler {
     }
 
     private canStoreProductPerOrderedQuantity(containerSpec: ContainerSpec, product: Product): boolean {
-        return this.productsHandler.getProductVolumePerOrderedQuantity(product) <= this.containersHandler.getContainerVolume(containerSpec)
+        return this.containersHandler.getContainerVolume(containerSpec) >= this.productsHandler.getProductVolumePerOrderedQuantity(product)
     }
 
     private canStoreProduct(containerSpec: ContainerSpec, product: Product): boolean {
