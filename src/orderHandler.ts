@@ -56,6 +56,7 @@ export class OrderHandler {
         orderRequest.products.forEach(product => {
             let quantityAdded = 0
 
+            // this loop type is used so that we could `break` out of it
             for (let i = 0; i < availableContainers.length; i++) {
                 const containerSpec = availableContainers[i]
                 let containingProducts: ContainingProduct[] = []
