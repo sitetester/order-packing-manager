@@ -43,26 +43,21 @@ export class OrderHandler {
 
     // ignore that container whose total volume is less than required ProductVolumePerOrderedQuantity
     private checkOrderExecutable(orderRequest: OrderRequest) {
-        const exceedingSizeProducts: string[] = []
         const containerTypesVolume = this.containersHandler.getContainerTypesVolume()
-        containerTypesVolume.forEach(containerTypeVolume => {
-            orderRequest.products.forEach(product => {
-                const productVolume = this.productsHandler.getProductVolume(product)
+        orderRequest.products.forEach(product => {
+            const productVolume = this.productsHandler.getProductVolume(product)
+
+            let timesProductVolumeGreater = 0
+            containerTypesVolume.forEach(containerTypeVolume => {
                 if (productVolume > containerTypeVolume.volume) {
-                    if (!exceedingSizeProducts.includes(product.id)) {
-                        exceedingSizeProducts.push(product.id)
-                    }
+                    timesProductVolumeGreater += 1
                 }
             })
+
+            if (timesProductVolumeGreater === containerTypesVolume.length) {
+                throw Error(`Order can't be executed, since one of it's product(s) (${product.id}) volume exceeds available containers volume.`)
+            }
         })
-
-        if (exceedingSizeProducts.length === containerTypesVolume.length) {
-            let error = `Order can't be executed, since one of it's product(s) (${JSON.stringify(exceedingSizeProducts)}`
-            error += ` exceeds available containers volume.`
-
-            this.debug(error)
-            throw Error(error)
-        }
     }
 
     // same container could be used multiple times
