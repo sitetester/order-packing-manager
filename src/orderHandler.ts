@@ -8,6 +8,7 @@ export class OrderHandler {
     private productsHandler: ProductsHandler;
 
     constructor(private parameters: { containerSpecs: ContainerSpec[] }) {
+
         this.containersHandler = new ContainersHandler(parameters)
         this.productsHandler = new ProductsHandler()
     }
