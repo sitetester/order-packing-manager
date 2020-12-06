@@ -22,7 +22,6 @@ export class OrderHandler {
             orderId: orderRequest.id,
             totalVolume: {
                 unit: "cubic centimeter",
-                // value: 0 // this should be dimensions of all USED containers (along with their quantity)
                 value: this.getTotalVolume(containers)
             },
             containers: containers
@@ -66,12 +65,11 @@ export class OrderHandler {
         const availableContainers = this.containersHandler.getContainers()
 
         orderRequest.products.forEach(product => {
+            let quantityAdded = 0
 
             for (let i = 0; i < availableContainers.length; i++) {
                 const containerSpec = availableContainers[i]
                 let containingProducts: ContainingProduct[] = []
-
-                // this.debug("containerSpec ---- " + containerSpec.containerType)
 
                 if (this.canStoreProduct(containerSpec, product)) {
                     if (this.canStoreProductPerOrderedQuantity(containerSpec, product)) {
@@ -79,20 +77,33 @@ export class OrderHandler {
                             containerType: containerSpec.containerType,
                             containingProducts: this.addToContainingProducts(containingProducts, product.id, product.orderedQuantity)
                         })
+                        quantityAdded += product.orderedQuantity
                         break // no need to check in next container
                     } else {
                         const howManyCanBeStored = this.howManyCanBeStored(containerSpec, product)
-                        // this.debug('howManyCanBeStored = ' + howManyCanBeStored)
                         containers.push({
                             containerType: containerSpec.containerType,
                             containingProducts: this.addToContainingProducts(containingProducts, product.id, howManyCanBeStored)
                         })
+                        quantityAdded += howManyCanBeStored
                     }
                 }
             }
+
+            const diff = product.orderedQuantity - quantityAdded
+            if (diff > 0) {
+                containers = this.reuseSameContainer(diff, containers)
+            }
         })
 
-        // this.debug(containers)
+        return containers
+    }
+
+    private reuseSameContainer(howManyTimes: number, containers: Containers[]): Containers[] {
+        const container = containers[0]
+        for (let i = 0; i < howManyTimes; i++) {
+            containers.push(container)
+        }
         return containers
     }
 
