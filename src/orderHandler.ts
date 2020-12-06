@@ -28,16 +28,6 @@ export class OrderHandler {
         };
     }
 
-    private getTotalVolume(containers: Containers[]) {
-
-        let totalVolume = 0
-        containers.map(container => container.containerType).forEach(containerType => {
-            totalVolume += this.containersHandler.getContainerTypeVolume(containerType)
-        })
-
-        return totalVolume
-    }
-
     private checkOrderExecutable(orderRequest: OrderRequest) {
 
         const containerTypesVolume = this.containersHandler.getContainerTypesVolume()
@@ -100,14 +90,9 @@ export class OrderHandler {
         return containers
     }
 
-    private reuseSameContainer(howManyTimes: number, containers: Containers[]): Containers[] {
+    private canStoreProduct(containerSpec: ContainerSpec, product: Product): boolean {
 
-        const container = containers[0]
-        for (let i = 0; i < howManyTimes; i++) {
-            containers.push(container)
-        }
-
-        return containers
+        return this.containersHandler.getContainerVolume(containerSpec) >= this.productsHandler.getProductVolume(product)
     }
 
     private canStoreProductPerOrderedQuantity(containerSpec: ContainerSpec, product: Product): boolean {
@@ -115,9 +100,14 @@ export class OrderHandler {
         return this.containersHandler.getContainerVolume(containerSpec) >= this.productsHandler.getProductVolumePerOrderedQuantity(product)
     }
 
-    private canStoreProduct(containerSpec: ContainerSpec, product: Product): boolean {
+    private addToContainingProducts(containingProducts: ContainingProduct[], id: string, quantity: number): ContainingProduct[] {
 
-        return this.containersHandler.getContainerVolume(containerSpec) >= this.productsHandler.getProductVolume(product)
+        containingProducts.push({
+            id: id,
+            quantity: quantity
+        })
+
+        return containingProducts
     }
 
     private howManyCanBeStored(containerSpec: ContainerSpec, product: Product): number {
@@ -135,14 +125,24 @@ export class OrderHandler {
         return quantity
     }
 
-    private addToContainingProducts(containingProducts: ContainingProduct[], id: string, quantity: number): ContainingProduct[] {
+    private reuseSameContainer(howManyTimes: number, containers: Containers[]): Containers[] {
 
-        containingProducts.push({
-            id: id,
-            quantity: quantity
+        const container = containers[0]
+        for (let i = 0; i < howManyTimes; i++) {
+            containers.push(container)
+        }
+
+        return containers
+    }
+
+    private getTotalVolume(containers: Containers[]) {
+
+        let totalVolume = 0
+        containers.map(container => container.containerType).forEach(containerType => {
+            totalVolume += this.containersHandler.getContainerTypeVolume(containerType)
         })
 
-        return containingProducts
+        return totalVolume
     }
 }
 
