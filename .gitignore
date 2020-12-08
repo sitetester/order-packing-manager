@@ -4,3 +4,4 @@ coverage
 .idea
 tmp.DS_Store
 tmp
+.DS_Store
