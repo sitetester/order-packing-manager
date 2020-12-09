@@ -47,7 +47,6 @@ export class OrderHandler {
         })
     }
 
-    // same container could be used multiple times
     private getContainers(orderRequest: OrderRequest): Containers[] {
 
         let containers: Containers[] = []
@@ -84,6 +83,7 @@ export class OrderHandler {
 
             const diff = product.orderedQuantity - quantityAdded
             if (diff > 0) {
+                // same container could be used multiple times
                 containers = this.reuseSameContainer(diff, containers)
             }
         })
