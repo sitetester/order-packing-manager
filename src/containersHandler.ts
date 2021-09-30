@@ -23,7 +23,7 @@ export class ContainersHandler {
 
     getContainerTypesVolume(): ContainerTypeVolume[] {
 
-        return this.parameters.containerSpecs.map(containerSpecs => {
+        return this.getContainers().map(containerSpecs => {
                 return {
                     containerType: containerSpecs.containerType,
                     volume: this.getContainerVolume(containerSpecs)

@@ -1,5 +1,3 @@
-/* Do not modify this file */
-
 import {ContainerSpec, OrderRequest, ShipmentRecord} from "../../interfaces";
 import {OrderHandler} from "../../orderHandler";
 
